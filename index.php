@@ -85,6 +85,7 @@
                   $task['task'] .
                   "</span>";
                 }else{
+                  echo
                   "<span class='ms-2'>" .
                   $task['task'] .
                   "</span>";
