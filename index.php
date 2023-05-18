@@ -1,4 +1,6 @@
 <?php
+  session_start();
+
   $tasks = [];
 
   $database = new PDO(
@@ -41,75 +43,85 @@
     >
       <div class="card-body">
         <h3 class="card-title mb-3">My Todo List</h3>
+        <div class="d-flex gap-3">
+            <?php if (isset($_SESSION["user"])){ ?>
+              <a href="logout.php">Logout</a>
+            <?php }else{?>
+            <a href="sign_up.php">Sign up</a>
+            <a href="login.php">Login</a>
+            <?php }?>
+        </div>
+        <?php if (isset ($_SESSION["user"])){?> 
           <ul class="list-group">
-          <?php
-            foreach ($tasks as $task) {?>
-          <li
+              <?php
+              foreach ($tasks as $task) {?>
+            <li
             class="list-group-item d-flex justify-content-between align-items-center"
-          >
-          <div>
-            <form method = "POST" action="update_task.php">
+            >
+            <div>
+              <form method = "POST" action="update_task.php">
                 <input 
-                    type="hidden"
-                    name="completed"
-                    value="<?=
-                      $task["completed"]
-                    ?>"
-                  />
-                <input 
+                      type="hidden"
+                      name="completed"
+                      value="<?=
+                        $task["completed"]
+                        ?>"
+                    />
+                    <input 
                     type="hidden"
                     name="id"
                     value="<?=
-                      $task["id"];
-                    ?>"
-                  />
-              <?php
-                if($task["completed"] == 1){
-                  echo 
-                  "<button class='btn btn-sm btn-success'>
+                        $task["id"];
+                        ?>"
+                    />
+                    <?php
+                  if($task["completed"] == 1){
+                    echo 
+                    "<button class='btn btn-sm btn-success'>
                     <i class='bi bi-check-square'></i>
-                  </button>
-                  ";
-                }else{
-                  echo  
-                  "<button class='btn btn-sm btn-light'>
+                    </button>
+                    ";
+                  }else{
+                    echo  
+                    "<button class='btn btn-sm btn-light'>
                     <i class='bi bi-square'></i>
-                  </button>";
-                }
-              ?> 
-              
-              <?php
-                if($task["completed"] == 1){
-                  echo 
-                  "<span class='ms-2 text-decoration-line-through'>" .
-                  $task['task'] .
-                  "</span>";
-                }else{
-                  echo
-                  "<span class='ms-2'>" .
-                  $task['task'] .
-                  "</span>";
-                }
-              ?>
-              </form>
-            </div>
-            <div> 
-              <form method = "POST" action="delete_task.php">
-                <input 
-                    type="hidden"
-                    name="id"
-                    value="<?=
-                      $task["id"];
-                    ?>"
-                  />
-                  <button class="btn btn-sm btn-danger">
-                    <i class="bi bi-trash"></i>
-                  </button>
-              </form>
-            </div>
-          </li>
-          <?php } ?>
-        </ul>
+                    </button>";
+                  }
+                  ?> 
+                
+                <?php
+                  if($task["completed"] == 1){
+                    echo 
+                    "<span class='ms-2 text-decoration-line-through'>" .
+                    $task['task'] .
+                    "</span>";
+                  }else{
+                    echo
+                    "<span class='ms-2'>" .
+                    $task['task'] .
+                    "</span>";
+                  }
+                  ?>
+                </form>
+              </div>
+              <div> 
+                <form method = "POST" action="delete_task.php">
+                  <input 
+                  type="hidden"
+                  name="id"
+                  value="<?=
+                        $task["id"];
+                        ?>"
+                    />
+                    <button class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </li>
+            <?php } ?>
+          </ul>
+        <?php } ?>
         <div class="mt-4">
           <form method="POST" action="add_task.php" class="d-flex justify-content-between align-items-center">
             <input
