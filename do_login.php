@@ -10,7 +10,7 @@
     $password = $_POST["password"];
 
     if (empty($email) || empty($password)){
-        echo 'Please enter required field';
+        $error = 'Please enter required field';
     }else{
         $sql = "SELECT * FROM users WHERE email = :email";
 
@@ -23,16 +23,22 @@
         $user = $query->fetch();
 
         if(empty($user)){
-            echo 'Email doesnt exist';
+            $error = 'Email doesnt exist';
         }else{
             if(password_verify($password,$user['password'])){
                 $_SESSION['user'] = $user;
 
-                header("Location: index.php");
+                header("Location: /");
                 exit;
             }else{
-                echo 'Password incorrect';
+                $error = 'Password incorrect';
             }
         }
+    }
+
+    if (isset ($error)){
+        $_SESSION['error'] = $error;
+        header("Location: /login");
+        exit;
     }
 ?>

@@ -16,7 +16,7 @@
             'completed' => 0
         ]);
 
-        header("Location: index.php");
+        header("Location: /");
         exit;
     }
 ?>

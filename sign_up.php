@@ -20,6 +20,16 @@
     <div class="card rounded shadow-sm mx-auto my-4" style="max-width: 500px;">
         <div class="card-body">
             <h3 class="card-title mb-3">Sign up a new account</h3>
+            <?php
+                if(isset($_SESSION['error'])) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php
+                        echo $_SESSION['error'];
+
+                        unset($_SESSION['error']);
+                    ?>
+                </div>
+            <?php endif; ?>    
             <form action="do_signup.php" method="POST">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
@@ -44,7 +54,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center">
-        <a href="index.php">Go back</a>
+        <a href="/">Go back</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>

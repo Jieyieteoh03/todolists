@@ -12,11 +12,11 @@
     $confirm_password = $_POST["confirm_password"];
 
     if(empty($name) || empty($email) || empty($password) || empty($confirm_password)){
-        echo 'Please enter field';
+        $error = 'Please enter field';
     } else if ($password !== $confirm_password){
-        echo 'Please check your password';
+        $error = 'Please check your password';
     } else if(strlen($password) < 8){
-        echo 'Must be 8 characters';
+        $error = 'Must be 8 characters';
     } else {
         $sql = 'INSERT INTO users (`name` , `email` , `password`)
             VALUES (:name, :email, :password)';
@@ -29,7 +29,13 @@
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ]);
 
-        header("Location: index.php");
+        header("Location: /");
+        exit;
+    }
+
+    if (isset ($error)){
+        $_SESSION['error'] = $error;
+        header("Location: /sign_up");
         exit;
     }
 

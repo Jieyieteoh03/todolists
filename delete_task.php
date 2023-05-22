@@ -15,7 +15,7 @@
             'id' => $task_id
         ]);
 
-        header("Location: index.php");
+        header("Location: /");
         exit;
     }
 ?>
