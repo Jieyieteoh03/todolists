@@ -1,15 +1,20 @@
 <?php
-    session_start();
 
-    $database = new PDO(
-    "mysql:host=devkinsta_db;dbname=todolist",
-    "root",
-    "LrJHyxBK8VE6Afq8");
+    $db = new DB();
 
     $name = $_POST["name"];
     $email = $_POST["email"];
     $password = $_POST["password"];
     $confirm_password = $_POST["confirm_password"];
+
+    $user = $db->fetch(
+        "SELECT * FROM users where email = :email",
+        [
+
+        'email' => $email
+
+        ]
+    );
 
     if(empty($name) || empty($email) || empty($password) || empty($confirm_password)){
         $error = 'Please enter field';
@@ -17,20 +22,6 @@
         $error = 'Please check your password';
     } else if(strlen($password) < 8){
         $error = 'Must be 8 characters';
-    } else {
-        $sql = 'INSERT INTO users (`name` , `email` , `password`)
-            VALUES (:name, :email, :password)';
-
-        $query = $database->prepare($sql);
-
-        $query->execute([
-            'name' => $name,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT)
-        ]);
-
-        header("Location: /");
-        exit;
     }
 
     if (isset ($error)){
@@ -38,5 +29,17 @@
         header("Location: /sign_up");
         exit;
     }
+
+        $sql = 'INSERT INTO users (`name` , `email` , `password`)
+            VALUES (:name, :email, :password)';
+
+        $db->insert($sql, [
+            'name' => $name,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+
+        header("Location: /login");
+        exit;
 
 ?>

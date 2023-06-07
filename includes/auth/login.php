@@ -1,10 +1,6 @@
 <?php
-    session_start();
 
-    $database = new PDO (
-    "mysql:host=devkinsta_db;dbname=todolist",
-    "root",
-    "LrJHyxBK8VE6Afq8");
+    $db = new DB();
 
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -12,15 +8,14 @@
     if (empty($email) || empty($password)){
         $error = 'Please enter required field';
     }else{
-        $sql = "SELECT * FROM users WHERE email = :email";
+        // OOP method
 
-        $query = $database->prepare($sql);
-
-        $query->execute([
-            'email' => $email
-        ]);
-
-        $user = $query->fetch();
+        $user = $db->fetch(
+            "SELECT * FROM users WHERE email = :email",
+            [
+                'email' => $email
+            ]
+            );
 
         if(empty($user)){
             $error = 'Email doesnt exist';
